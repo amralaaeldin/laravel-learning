@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Carbon\Carbon;
@@ -31,9 +32,11 @@ class PostController extends Controller
         return view('posts.create', ['users' => User::all()]);
     }
 
-    public function store(Request $myRequestObject)
+    public function store(StorePostRequest $request)
     {
-        Post::create($myRequestObject->all());
+
+
+        Post::create($request->all());
         return redirect()->route('posts.index');
     }
 
@@ -42,10 +45,10 @@ class PostController extends Controller
         return view('posts.edit', ['post' => Post::find($postId), 'users' => User::all()]);
     }
 
-    public function update(Request $myRequestObject)
+    public function update(StorePostRequest $request, Post $post)
     {
-        Post::find($myRequestObject->user_id)
-            ->update($myRequestObject->all());
+        Post::find($post->id)
+            ->update($request->all());
         return redirect()->route('posts.index');
     }
 
