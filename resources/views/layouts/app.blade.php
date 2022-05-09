@@ -27,6 +27,9 @@
             <div class="container">
 
                 @if (Auth::user())
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
                 <a class="navbar-brand" href="{{route('posts.index')}}">All Posts</a>
                 @else
                 <a class="navbar-brand" href="{{ url('/') }}">
