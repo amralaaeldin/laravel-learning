@@ -11,7 +11,8 @@
     </div>
 @endif
 
-<form method="POST" action="{{route('posts.update',['post'=>$post->id])}}">
+
+<form method="POST" action="{{route('posts.update',['post'=>$post->id, 'prev'=> url()->previous()])}}">
     @csrf
     @method('PUT')
     <div class="mb-3">

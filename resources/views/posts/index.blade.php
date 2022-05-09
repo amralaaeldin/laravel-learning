@@ -7,18 +7,18 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">title</th>
+                    <th scope="col">slug</th>
                     <th scope="col">posted by</th>
                     <th scope="col">created at</th>
                     <th scope="col">actions</th>
                 </tr>
             </thead>
             <tbody>
-
                 @foreach ($posts as $post)
                 <tr>
                 @if ($post->trashed())
                 <th scope="row">{{$post->id}}</th>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
                 <td colspan="3">
                     <form style="display: inline" action="{{route('posts.restore', ['postId'=>$post->id])}}"
                         method="POST">
@@ -54,15 +54,19 @@
                 @else
                 <th scope="row">{{$post->id}}</th>
                 <td>{{$post->title}}</td>
+                <td>{{$post->slug ?? 'null'}}</td>
                 <td>{{$post->user->name ?? 'unknown'}}</td>
                 <td>{{\Carbon\Carbon::create($post->created_at)->format('l jS \\of F Y h:i:s A');}}</td>
                 <td colspan="3">
-                    <a href='{{route('posts.show', ['postId'=>$post->id])}}' class="btn btn-info">View</a>
+                    {{-- <a href='{{route('posts.show', ['postId'=>$post->id])}}' class="btn btn-info">View</a> --}}
+                    <a href='{{route('posts.show', ['postSlug'=>$post->slug])}}' class="btn btn-info">View</a>
+
                     {{-- <button type="button" data-id='{{ $post->id }}' class="btn btn-info showModalBtn"
                         data-bs-toggle="modal" data-bs-target="#showModal">
                         View
                       </button> --}}
-                    <a href='{{route('posts.edit', ['postId'=>$post->id])}}' class="btn btn-primary">Edit</a>
+                    <a href='{{route('posts.edit', ['postSlug'=>$post->slug])}}' class="btn btn-primary">Edit</a>
+                    {{-- <a href='{{route('posts.edit', ['postId'=>$post->id])}}' class="btn btn-primary">Edit</a> --}}
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#modal{{$post->id}}">
                         Delete
@@ -96,7 +100,7 @@
             </tbody>
         </table>
 
-
+{{-- {{ dd($posts); }} --}}
         <footer class="py-5">
             {{ $posts->links() }}
         </footer>

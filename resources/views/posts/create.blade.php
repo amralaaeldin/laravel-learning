@@ -11,7 +11,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{route('posts.store')}}">
+<form method="POST" action="{{route('posts.store', ['last'=> url()->previous()])}}">
     @csrf
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
