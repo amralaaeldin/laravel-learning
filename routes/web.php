@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ImageController;
 // use App\Http\Controllers\Auth;
 
 /*
@@ -36,4 +37,6 @@ Route::middleware(['auth'])->group(function () {
 
 Auth::routes();
 
+Route::get('imgs', [ImageController::class, 'index'])->name('imgs.index');
+Route::post('imgs/upload', [ImageController::class, 'upload'])->name('imgs.upload');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
