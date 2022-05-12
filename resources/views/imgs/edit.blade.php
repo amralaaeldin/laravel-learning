@@ -11,22 +11,15 @@
 <body>
 
     <div class="container">
-        <h1 class='my-3'>Hello Images</h1>
-        <form method="POST" enctype="multipart/form-data" action="{{ route('imgs.upload') }}">
+        <h1 class='my-3'>Edit Image</h1>
+        <form method="POST" enctype="multipart/form-data" action="{{ route('imgs.update', ['img'=>$img->id]) }}">
             @csrf
+            @method('PUT')
             <label for="avatar" class="form-label">Avatar</label>
             <input name="avatar" id='avatar' class="form-control" type="file">
-            <button class='btn btn-success mt-3' type="submit">Upload Image</button>
+            <button class='btn btn-success mt-3' type="submit">Update Image</button>
         </form>
-        <div class="row row-cols-4">
-            @foreach ($imgs as $img)
-            <div  class="card my-3 col gx-5" style="width: 18rem;">
-                <a href="{{ route('imgs.edit', ['imgId'=>$img->id]) }}">
-                    <img width="200" height="250" src="{{ asset("$img->path") }}" class="card-img-top" alt=" image{{ $img->id }}">
-                </a>
-            </div>
-            @endforeach
-        </div>
+
     </div>
 
 </body>

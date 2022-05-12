@@ -35,8 +35,11 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('posts/{postId}', [PostController::class, 'show'])->name('posts.show');
 });
 
-Auth::routes();
 
 Route::get('imgs', [ImageController::class, 'index'])->name('imgs.index');
 Route::post('imgs/upload', [ImageController::class, 'upload'])->name('imgs.upload');
+Route::get('imgs/{imgId}/edit', [ImageController::class, 'edit'])->name('imgs.edit');
+Route::put('imgs/{img}', [ImageController::class, 'update'])->name('imgs.update');
+
+Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
