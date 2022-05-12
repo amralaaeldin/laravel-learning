@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Rules\Maxposts;
 
 class StorePostRequest extends FormRequest
 {
@@ -32,7 +33,7 @@ class StorePostRequest extends FormRequest
             'description' => ['required',
                             'min:10'],
             'user_id' => ['required',
-                        'exists:users,id']
+                        'exists:users,id', new Maxposts(5)]
         ];
 
     }
