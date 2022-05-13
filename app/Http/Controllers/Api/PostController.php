@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index () {
 
-        return PostResource::collection(Post::withTrashed()->paginate(15));
+        return PostResource::collection(Post::with('user')->withTrashed()->paginate(15));
 
     }
     public function show ($post) {
