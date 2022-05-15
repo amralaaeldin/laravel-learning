@@ -48,7 +48,7 @@
                                 Connect to Github
                             </a>
                         @endif
-                        {{-- @if (isset($data['google']))
+                        @if (isset($data['google']))
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showData">
                                 Show Google Data
                               </button>
@@ -66,8 +66,7 @@
                                         </div>
                                         <p><b>Id</b>: {{ $data['google']['id'] }}</p>
                                         <p><b>Name</b>: {{ $data['google']['name'] }}</p>
-                                        <p><b>repos_url</b>: <a href="{{ $data['google']['repos_url'] }}">https://api.github.com/users/amralaaeledin/repos</a></p>
-                                        <p><b>html_url</b>: <a href="{{ $data['google']['html_url'] }}">https://github.com/amralaaeledin</a></p>
+                                        <p><b>Email</b>: {{ $data['google']['email'] }}</p>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -79,7 +78,7 @@
                             <a class="btn btn-primary" href="/connect/google">
                                 Connect to Google
                             </a>
-                        @endif --}}
+                        @endif
 
                     </div>
                 </div>

@@ -16,20 +16,41 @@ class OAuthController extends Controller
     public function connect ($oAuthType) {
 
         if (Auth()->user()[$oAuthType.'_token']) {
-            $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
-            ->get('https://api.github.com/user')
-            ->json();
 
-            return view('home', ['data' => ['github' => [
-                'name' => $response['name'],
-                'repos_url' => $response['repos_url'],
-                'html_url' => $response['html_url'],
-                'avatar_url' => $response['avatar_url'],
-                'id' => $response['id']
-                    ]]]);
-        } else {
+            if ($oAuthType === 'github') {
+                    $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
+                    ->get('https://api.github.com/user')
+                    ->json();
+
+                    return view('home', ['data' => ['github' => [
+                        'name' => $response['name'],
+                        'repos_url' => $response['repos_url'],
+                        'html_url' => $response['html_url'],
+                        'avatar_url' => $response['avatar_url'],
+                        'id' => $response['id']
+                        ]]]);
+            }
+
+
+            else if ($oAuthType === 'google') {
+                    $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
+                    ->get('https://www.googleapis.com/oauth2/v1/userinfo?access_token='.Auth()->user()[$oAuthType.'_token'])
+                    ->json();
+
+                    return view('home', ['data' => ['google' => [
+                        'name' => $response['name'],
+                        'email' => $response['email'],
+                        'avatar_url' => $response['picture'],
+                        'id' => $response['id']
+                        ]]]);
+            }
+
+        }
+
+        else {
             return redirect('/auth/'.$oAuthType.'/redirect');
         }
+
     }
     public function handleRedirect ($oAuthType) {
         return Socialite::driver($oAuthType)->redirect();
