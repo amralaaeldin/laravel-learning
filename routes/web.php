@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageController;
-// use App\Http\Controllers\Auth;
+use App\Http\Controllers\Auth\OAuthController;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +19,13 @@ use App\Http\Controllers\ImageController;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -35,11 +42,24 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('posts/{postId}', [PostController::class, 'show'])->name('posts.show');
 });
 
-
 Route::get('imgs', [ImageController::class, 'index'])->name('imgs.index');
 Route::post('imgs/upload', [ImageController::class, 'upload'])->name('imgs.upload');
 Route::get('imgs/{imgId}/edit', [ImageController::class, 'edit'])->name('imgs.edit');
 Route::put('imgs/{img}', [ImageController::class, 'update'])->name('imgs.update');
 
-Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/auth/{oAuthType}/redirect', [OAuthController::class, 'handleRedirect']);
+Route::get('/auth/{oAuthType}/callback', [OAuthController::class, 'handleCallback']);
+Route::get('/connect/{oAuthType}', [OAuthController::class, 'connect']);
+
+
+
+
+
+
+
+
+
+
+
+

@@ -53,7 +53,13 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <a class="btn btn-dark" href="/auth/github/redirect">
+                                    Login with Github
+                                </a>
+                                <a class="btn btn-primary" href="/auth/google/redirect">
+                                    Login with Google
+                                </a>
+                                <button type="submit" class="btn btn-success">
                                     {{ __('Login') }}
                                 </button>
 
