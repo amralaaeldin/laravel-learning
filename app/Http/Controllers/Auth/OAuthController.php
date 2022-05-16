@@ -19,30 +19,44 @@ class OAuthController extends Controller
 
             if ($oAuthType === 'github') {
                     $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
-                    ->get('https://api.github.com/user')
-                    ->json();
+                    ->get('https://api.github.com/user');
 
-                    return view('home', ['data' => ['github' => [
-                        'name' => $response['name'],
-                        'repos_url' => $response['repos_url'],
-                        'html_url' => $response['html_url'],
-                        'avatar_url' => $response['avatar_url'],
-                        'id' => $response['id']
-                        ]]]);
+                    if ($response->failed() && $response->status() === 401) {
+                        return redirect('/auth/'.$oAuthType.'/redirect');
+                    }
+                    else if ($response->ok()) {
+                        session()->put('data.github', [
+                            'name' => $response->json()['name'],
+                            'repos_url' => $response->json()['repos_url'],
+                            'html_url' => $response->json()['html_url'],
+                            'avatar_url' => $response->json()['avatar_url'],
+                            'id' => $response->json()['id']
+                            ]);
+
+                            return view('home');
+                }
+
             }
 
 
             else if ($oAuthType === 'google') {
                     $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
-                    ->get('https://www.googleapis.com/oauth2/v1/userinfo?access_token='.Auth()->user()[$oAuthType.'_token'])
-                    ->json();
+                    ->get('https://www.googleapis.com/oauth2/v1/userinfo?access_token='.Auth()->user()[$oAuthType.'_token']);
 
-                    return view('home', ['data' => ['google' => [
-                        'name' => $response['name'],
-                        'email' => $response['email'],
-                        'avatar_url' => $response['picture'],
-                        'id' => $response['id']
-                        ]]]);
+                    if ($response->failed() && $response->status() === 401) {
+                        return redirect('/auth/'.$oAuthType.'/redirect');
+                    }
+                    elseif ($response->ok()) {
+                        session()->put('data.google', [
+                        'name' => $response->json()['name'],
+                        'email' => $response->json()['email'],
+                        'avatar_url' => $response->json()['picture'],
+                        'id' => $response->json()['id']
+                        ]);
+
+
+                        return view('home');
+                    }
             }
 
         }

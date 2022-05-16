@@ -16,7 +16,8 @@
 
                     {{ __('You are logged in!') }}
                     <div class="my-3">
-                        @if (isset($data['github']))
+
+                        @if (session()->has('data.github'))
                             <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#showGithubData">
                                 Show Github Data
                               </button>
@@ -30,12 +31,12 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="col-md-4">
-                                            <img src="{{ $data['github']['avatar_url'] }}" class="img-fluid rounded-start" alt="avatar">
+                                            <img src="{{ session()->get('data.github')['avatar_url'] }}" class="img-fluid rounded-start" alt="avatar">
                                         </div>
-                                        <p><b>Id</b>: {{ $data['github']['id'] }}</p>
-                                        <p><b>Name</b>: {{ $data['github']['name'] }}</p>
-                                        <p><b>repos_url</b>: <a href="{{ $data['github']['repos_url'] }}">https://api.github.com/users/amralaaeledin/repos</a></p>
-                                        <p><b>html_url</b>: <a href="{{ $data['github']['html_url'] }}">https://github.com/amralaaeledin</a></p>
+                                        <p><b>Id</b>: {{ session()->get('data.github')['id'] }}</p>
+                                        <p><b>Name</b>: {{ session()->get('data.github')['name'] }}</p>
+                                        <p><b>repos_url</b>: <a href="{{ session()->get('data.github')['repos_url'] }}">https://api.github.com/users/amralaaeledin/repos</a></p>
+                                        <p><b>html_url</b>: <a href="{{ session()->get('data.github')['html_url'] }}">https://github.com/amralaaeledin</a></p>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -48,7 +49,7 @@
                                 Connect to Github
                             </a>
                         @endif
-                        @if (isset($data['google']))
+                        @if (session()->has('data.google'))
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showData">
                                 Show Google Data
                               </button>
@@ -62,11 +63,11 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="col-md-4">
-                                            <img src="{{ $data['google']['avatar_url'] }}" class="img-fluid rounded-start" alt="avatar">
+                                            <img src="{{ session()->get('data.google')['avatar_url'] }}" class="img-fluid rounded-start" alt="avatar">
                                         </div>
-                                        <p><b>Id</b>: {{ $data['google']['id'] }}</p>
-                                        <p><b>Name</b>: {{ $data['google']['name'] }}</p>
-                                        <p><b>Email</b>: {{ $data['google']['email'] }}</p>
+                                        <p><b>Id</b>: {{ session()->get('data.google')['id'] }}</p>
+                                        <p><b>Name</b>: {{ session()->get('data.google')['name'] }}</p>
+                                        <p><b>Email</b>: {{ session()->get('data.google')['email'] }}</p>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
