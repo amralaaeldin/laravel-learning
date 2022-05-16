@@ -98,16 +98,7 @@ class OAuthController extends Controller
         }
 
         Auth::login($user);
-        return redirect('/posts');
+        return redirect('/home');
 
-    /*     'github_refresh_token' => $user->refreshToken,
-        $user = User::updateOrCreate([
-            'oauth_'.$oAuthType.'_id' => $user->id,
-            $oAuthType.'_token' => $user->token
-        ], [
-            'email' => $user->email,
-            'name' => $user->name,
-            'password' => Hash::make($user->id),
-            ]); */
     }
 }
