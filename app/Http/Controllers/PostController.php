@@ -57,7 +57,6 @@ class PostController extends Controller
             parse_str(parse_url($request->prev)['query'], $output);
         }
 
-
         $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
         // Str::of($request->title)->slug('-')->value; // this can be enough, cuz we validate uniqe title
         // Str::slug($request->title, '-'); // direct value
@@ -69,10 +68,7 @@ class PostController extends Controller
 
     public function destroy($postId)
     {
-        if(isset(parse_url(url()->previous())['query'])){
-
-            parse_str(parse_url(url()->previous())['query'], $output);
-        }
+        $output = self::getPrevPage();
 
             Post::find($postId)->delete();
         return redirect()->route('posts.index',['page'=>$output['page'] ?? null]);
@@ -80,10 +76,7 @@ class PostController extends Controller
 
     public function restore($postId)
     {
-        if(isset(parse_url(url()->previous())['query'])){
-
-            parse_str(parse_url(url()->previous())['query'], $output);
-        }
+        $output = self::getPrevPage();
 
         Post::withTrashed()->where('id', $postId)->restore();
         return redirect()->route('posts.index', ['page'=>$output['page'] ?? null]);
@@ -91,16 +84,17 @@ class PostController extends Controller
 
     public function delete($postId)
     {
-        if(isset(parse_url(url()->previous())['query'])){
-
-            parse_str(parse_url(url()->previous())['query'], $output);
-        }
+        $output = self::getPrevPage();
 
         Post::withTrashed()->where('id', $postId)->forceDelete();
         return redirect()->route('posts.index', ['page'=>$output['page'] ?? null]);
     }
 
+    private function getPrevPage () {
+        if(isset(parse_url(url()->previous())['query'])){
+            parse_str(parse_url(url()->previous())['query'], $output);
+        }
+        return $output;
+    }
+
 }
-
-
-

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Factories\DriverFactory;
 use App\Http\Controllers\Controller;
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,49 +17,7 @@ class OAuthController extends Controller
     public function connect ($oAuthType) {
 
         if (Auth()->user()[$oAuthType.'_token']) {
-
-            if ($oAuthType === 'github') {
-                    $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
-                    ->get('https://api.github.com/user');
-
-                    if ($response->failed() && $response->status() === 401) {
-                        return redirect('/auth/'.$oAuthType.'/redirect');
-                    }
-                    else if ($response->ok()) {
-                        session()->put('data.github', [
-                            'name' => $response->json()['name'],
-                            'repos_url' => $response->json()['repos_url'],
-                            'html_url' => $response->json()['html_url'],
-                            'avatar_url' => $response->json()['avatar_url'],
-                            'id' => $response->json()['id']
-                            ]);
-
-                            return view('home');
-                }
-
-            }
-
-
-            else if ($oAuthType === 'google') {
-                    $response = Http::withToken( Auth()->user()[$oAuthType.'_token'])
-                    ->get('https://www.googleapis.com/oauth2/v1/userinfo?access_token='.Auth()->user()[$oAuthType.'_token']);
-
-                    if ($response->failed() && $response->status() === 401) {
-                        return redirect('/auth/'.$oAuthType.'/redirect');
-                    }
-                    elseif ($response->ok()) {
-                        session()->put('data.google', [
-                        'name' => $response->json()['name'],
-                        'email' => $response->json()['email'],
-                        'avatar_url' => $response->json()['picture'],
-                        'id' => $response->json()['id']
-                        ]);
-
-
-                        return view('home');
-                    }
-            }
-
+            return (new DriverFactory)->create($oAuthType);
         }
 
         else {
@@ -70,7 +29,7 @@ class OAuthController extends Controller
         return Socialite::driver($oAuthType)->redirect();
     }
     public function handleCallback ($oAuthType) {
-        $user = Socialite::driver($oAuthType)->user();
+        $user = Socialite::driver($oAuthType)->stateless()->user();
 
         $userExisted = User::where('email',$user->email)->where('oauth_'.$oAuthType.'_id',$user->id)->first();
         if ($userExisted) {
@@ -99,6 +58,5 @@ class OAuthController extends Controller
 
         Auth::login($user);
         return redirect('/home');
-
     }
 }
