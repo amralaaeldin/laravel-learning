@@ -29,7 +29,7 @@ class OAuthController extends Controller
         return Socialite::driver($oAuthType)->redirect();
     }
     public function handleCallback ($oAuthType) {
-        $user = Socialite::driver($oAuthType)->stateless()->user();
+        $user = Socialite::driver($oAuthType)->user();
 
         $userExisted = User::where('email',$user->email)->where('oauth_'.$oAuthType.'_id',$user->id)->first();
         if ($userExisted) {
